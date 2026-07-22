@@ -43,6 +43,7 @@ function ResearchPage() {
   const [depth, setDepth] = useState("Standard");
   const [focus, setFocus] = useState("");
   const [brief, setBrief] = useState<Brief | null>(null);
+  const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function research() {
@@ -61,7 +62,9 @@ function ResearchPage() {
         },
       });
       const cleaned = content.replace(/^```json\s*|\s*```$/g, "").trim();
-      setBrief(JSON.parse(cleaned) as Brief);
+      const parsed = JSON.parse(cleaned) as Brief;
+      setBrief(parsed);
+      setDraft(toMarkdown(topic, parsed));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to generate brief");
     } finally {
@@ -70,8 +73,8 @@ function ResearchPage() {
   }
 
   async function copyBrief() {
-    if (!brief) return;
-    await navigator.clipboard.writeText(toMarkdown(topic, brief));
+    if (!draft) return;
+    await navigator.clipboard.writeText(draft);
     toast.success("Research brief copied");
   }
 
