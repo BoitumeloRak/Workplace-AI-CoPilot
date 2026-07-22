@@ -218,6 +218,3 @@ function PlannerPage() {
     </div>
   );
 }
-    </div>
-  );
-}
