@@ -58,9 +58,7 @@ function PlannerPage() {
       const { content } = await run({
         data: {
           system:
-            "You are a productivity coach. Return ONLY valid JSON, no markdown fences, matching:\n" +
-            "{\"matrix\":{\"urgentImportant\":[{\"task\":string,\"estimate\":string,\"note\":string}],\"notUrgentImportant\":[...],\"urgentNotImportant\":[...],\"notUrgentNotImportant\":[...]},\"schedule\":[{\"time\":string,\"task\":string}],\"tips\":string[]}\n" +
-            "estimate must be like '30m' or '1h 30m'. schedule covers a workday (09:00-18:00) using 30-60 min blocks. Provide 3-5 practical time-optimization tips.",
+            "You are an agile productivity consultant. Organize the provided tasks into a structured daily plan using the Eisenhower Matrix (High Priority = urgent & important, Scheduled = important & not urgent, Delegated/Quick Wins = urgent & not important, and low-value items = not urgent & not important). Provide actionable time-blocking advice.\n\nReturn ONLY valid JSON, no markdown fences, matching:\n{\"matrix\":{\"urgentImportant\":[{\"task\":string,\"estimate\":string,\"note\":string}],\"notUrgentImportant\":[...],\"urgentNotImportant\":[...],\"notUrgentNotImportant\":[...]},\"schedule\":[{\"time\":string,\"task\":string}],\"tips\":string[]}\nestimate must be like '30m' or '1h 30m'. schedule covers a workday (09:00-18:00) using 30-60 min blocks. Provide 3-5 practical time-blocking / optimization tips.",
           prompt: `Tasks / goals:\n${tasks}\n\nUrgent deadlines:\n${deadlines || "(none specified)"}`,
         },
       });
