@@ -39,6 +39,7 @@ function NotesPage() {
   const run = useServerFn(generateAI);
   const [notes, setNotes] = useState("");
   const [summary, setSummary] = useState<Summary | null>(null);
+  const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function summarize() {
@@ -59,6 +60,7 @@ function NotesPage() {
       const cleaned = content.replace(/^```json\s*|\s*```$/g, "").trim();
       const parsed = JSON.parse(cleaned) as Summary;
       setSummary(parsed);
+      setDraft(toMarkdown(parsed));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to summarize");
     } finally {
@@ -67,14 +69,14 @@ function NotesPage() {
   }
 
   async function copySummary() {
-    if (!summary) return;
-    await navigator.clipboard.writeText(toMarkdown(summary));
+    if (!draft) return;
+    await navigator.clipboard.writeText(draft);
     toast.success("Summary copied");
   }
 
   function exportMarkdown() {
-    if (!summary) return;
-    const blob = new Blob([toMarkdown(summary)], { type: "text/markdown" });
+    if (!draft) return;
+    const blob = new Blob([draft], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
