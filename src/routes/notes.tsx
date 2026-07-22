@@ -187,6 +187,10 @@ function NotesPage() {
                     </table>
                   </div>
                 </section>
+                <section>
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">Editable draft (Markdown)</Label>
+                  <Textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={12} className="mt-2 font-mono text-xs leading-relaxed" />
+                </section>
               </>
             )}
           </CardContent>
