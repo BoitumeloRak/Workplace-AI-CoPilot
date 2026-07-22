@@ -124,7 +124,7 @@ function ResearchPage() {
               <CardTitle className="text-base">Research Brief</CardTitle>
               <CardDescription>Review and copy.</CardDescription>
             </div>
-            <Button variant="outline" size="sm" onClick={copyBrief} disabled={!brief}>
+            <Button variant="outline" size="sm" onClick={copyBrief} disabled={!draft}>
               <Copy className="mr-2 h-3.5 w-3.5" /> Copy
             </Button>
           </CardHeader>
