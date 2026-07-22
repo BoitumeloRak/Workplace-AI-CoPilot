@@ -149,6 +149,9 @@ function ResearchPage() {
                 <BulletSection title="Insights" items={brief.insights} />
                 <BulletSection title="Considerations & Risks" items={brief.considerations} />
                 <BulletSection title="Suggested Sources to Explore" items={brief.suggestedSources} />
+                <Section title="Editable draft (Markdown)">
+                  <Textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={14} className="font-mono text-xs leading-relaxed" />
+                </Section>
               </>
             )}
           </CardContent>
