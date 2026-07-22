@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { ListChecks, Loader2, Sparkles, Clock, Lightbulb } from "lucide-react";
+import { ListChecks, Loader2, Sparkles, Clock, Lightbulb, Copy } from "lucide-react";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
