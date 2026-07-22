@@ -203,8 +203,21 @@ function PlannerPage() {
               </CardContent>
             </Card>
           </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Editable draft (Markdown)</CardTitle>
+              <CardDescription>Tweak the plan before copying.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={16} className="font-mono text-xs leading-relaxed" />
+            </CardContent>
+          </Card>
         </div>
       )}
+    </div>
+  );
+}
     </div>
   );
 }
