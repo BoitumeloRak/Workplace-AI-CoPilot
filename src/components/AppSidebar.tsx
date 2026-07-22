@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Mail, FileText, ListChecks, Sparkles } from "lucide-react";
+import { Mail, FileText, ListChecks, Sparkles, Search, Bot } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +17,8 @@ const items = [
   { title: "Email Generator", url: "/", icon: Mail },
   { title: "Notes Summarizer", url: "/notes", icon: FileText },
   { title: "Task Planner", url: "/planner", icon: ListChecks },
+  { title: "Research Assistant", url: "/research", icon: Search },
+  { title: "AI Chat", url: "/chat", icon: Bot },
 ];
 
 export function AppSidebar() {
