@@ -52,7 +52,7 @@ function NotesPage() {
       const { content } = await run({
         data: {
           system:
-            "You summarize meeting notes. Return ONLY valid JSON matching this exact shape, no markdown fences, no commentary:\n{\"executive\": string, \"decisions\": string[], \"actions\": [{\"task\": string, \"owner\": string, \"deadline\": string}]}\nUse 'Unassigned' if owner is missing and 'TBD' if deadline is missing. Executive summary should be 2-4 sentences.",
+            "You are an executive assistant. Parse the raw meeting notes and structure them into: 1. Executive Summary (2-3 sentences), 2. Key Decisions Made, 3. Action Items (with Task, Assignee, and Deadline). If information is missing, note it standardly (use 'Unassigned' for missing owners and 'TBD' for missing deadlines).\n\nReturn ONLY valid JSON matching this exact shape, no markdown fences, no commentary:\n{\"executive\": string, \"decisions\": string[], \"actions\": [{\"task\": string, \"owner\": string, \"deadline\": string}]}",
           prompt: notes,
         },
       });
