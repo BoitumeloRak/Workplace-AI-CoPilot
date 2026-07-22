@@ -102,7 +102,7 @@ function RootComponent() {
             </main>
             <footer className="border-t border-border/70 bg-card/40">
               <div className="mx-auto max-w-6xl px-6 py-3 text-center text-xs text-muted-foreground">
-                <span className="font-medium text-foreground/80">Disclaimer:</span> AI-generated outputs should be reviewed and verified before business use.
+                <span className="font-medium text-foreground/80">Notice:</span> AI-generated responses are suggestions and should be reviewed prior to professional use.
               </div>
             </footer>
           </div>
