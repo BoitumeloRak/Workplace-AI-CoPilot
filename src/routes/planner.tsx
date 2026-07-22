@@ -136,6 +136,11 @@ function PlannerPage() {
 
       {plan && (
         <div className="space-y-6">
+          <div className="flex justify-end">
+            <Button variant="outline" size="sm" onClick={copyPlan} disabled={!draft}>
+              <Copy className="mr-2 h-3.5 w-3.5" /> Copy Plan
+            </Button>
+          </div>
           <section>
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Eisenhower Matrix</h2>
             <div className="grid gap-3 md:grid-cols-2">
