@@ -53,8 +53,8 @@ function EmailPage() {
       const { content } = await run({
         data: {
           system:
-            "You are an expert business email writer. Return ONLY the email in this exact format:\nSubject: <one line subject>\n\n<email body with greeting, paragraphs, and signoff>\nNo preamble, no markdown, no commentary.",
-          prompt: `Audience: ${audience}\nTone: ${useTone}\nKey points/context:\n${context}`,
+            "You are an executive communications assistant. Draft a concise, professional email based on the context, audience, and tone provided. Format the output with a clear Subject Line and Email Body. Avoid fluff or generic boilerplate.\n\nReturn ONLY in this exact format, no preamble, no markdown fences, no commentary:\nSubject: <one line subject>\n\n<email body with greeting, paragraphs, and signoff>",
+          prompt: `Audience: ${audience}\nTone: ${useTone}\nKey context/points:\n${context}`,
         },
       });
       const parsed = parseEmail(content);
