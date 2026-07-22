@@ -39,6 +39,7 @@ function NotesPage() {
   const run = useServerFn(generateAI);
   const [notes, setNotes] = useState("");
   const [summary, setSummary] = useState<Summary | null>(null);
+  const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function summarize() {
@@ -59,6 +60,7 @@ function NotesPage() {
       const cleaned = content.replace(/^```json\s*|\s*```$/g, "").trim();
       const parsed = JSON.parse(cleaned) as Summary;
       setSummary(parsed);
+      setDraft(toMarkdown(parsed));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to summarize");
     } finally {
@@ -67,14 +69,14 @@ function NotesPage() {
   }
 
   async function copySummary() {
-    if (!summary) return;
-    await navigator.clipboard.writeText(toMarkdown(summary));
+    if (!draft) return;
+    await navigator.clipboard.writeText(draft);
     toast.success("Summary copied");
   }
 
   function exportMarkdown() {
-    if (!summary) return;
-    const blob = new Blob([toMarkdown(summary)], { type: "text/markdown" });
+    if (!draft) return;
+    const blob = new Blob([draft], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -119,10 +121,10 @@ function NotesPage() {
               <CardDescription>Review, copy, or export.</CardDescription>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={copySummary} disabled={!summary}>
+              <Button variant="outline" size="sm" onClick={copySummary} disabled={!draft}>
                 <Copy className="mr-2 h-3.5 w-3.5" /> Copy
               </Button>
-              <Button variant="outline" size="sm" onClick={exportMarkdown} disabled={!summary}>
+              <Button variant="outline" size="sm" onClick={exportMarkdown} disabled={!draft}>
                 <Download className="mr-2 h-3.5 w-3.5" /> Markdown
               </Button>
             </div>
@@ -184,6 +186,10 @@ function NotesPage() {
                       </tbody>
                     </table>
                   </div>
+                </section>
+                <section>
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">Editable draft (Markdown)</Label>
+                  <Textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={12} className="mt-2 font-mono text-xs leading-relaxed" />
                 </section>
               </>
             )}

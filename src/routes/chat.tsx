@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
-import { Bot, Loader2, Send, Sparkles, Trash2, User } from "lucide-react";
+import { Bot, Copy, Loader2, Send, Sparkles, Trash2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/chat")({
@@ -160,16 +160,28 @@ function Avatar({ role }: { role: "user" | "assistant" }) {
 
 function Bubble({ msg }: { msg: Msg }) {
   const isUser = msg.role === "user";
+  async function copy() {
+    await navigator.clipboard.writeText(msg.content);
+    toast.success("Copied to clipboard");
+  }
   return (
-    <div className={cn("flex gap-3", isUser && "flex-row-reverse")}>
+    <div className={cn("group flex gap-3", isUser && "flex-row-reverse")}>
       <Avatar role={msg.role} />
-      <div
-        className={cn(
-          "max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed",
-          isUser ? "bg-primary text-primary-foreground" : "bg-muted/50 text-foreground",
-        )}
-      >
-        {msg.content}
+      <div className={cn("flex max-w-[85%] flex-col gap-1", isUser && "items-end")}>
+        <div
+          className={cn(
+            "whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed",
+            isUser ? "bg-primary text-primary-foreground" : "bg-muted/50 text-foreground",
+          )}
+        >
+          {msg.content}
+        </div>
+        <button
+          onClick={copy}
+          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground opacity-0 transition hover:text-foreground group-hover:opacity-100"
+        >
+          <Copy className="h-3 w-3" /> Copy
+        </button>
       </div>
     </div>
   );

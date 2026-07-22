@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { ListChecks, Loader2, Sparkles, Clock, Lightbulb } from "lucide-react";
+import { ListChecks, Loader2, Sparkles, Clock, Lightbulb, Copy } from "lucide-react";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -40,11 +40,20 @@ const quadrantMeta = [
   { key: "notUrgentNotImportant", label: "Eliminate", sub: "Not Urgent · Not Important", tone: "bg-muted border-border" },
 ] as const;
 
+function planToMarkdown(p: Plan): string {
+  const q = (label: string, items: TaskItem[]) =>
+    `### ${label}\n${items.length ? items.map((i) => `- **${i.task}** (${i.estimate})${i.note ? ` — ${i.note}` : ""}`).join("\n") : "- (none)"}`;
+  const sched = p.schedule.map((s) => `- ${s.time} — ${s.task}`).join("\n") || "- (none)";
+  const tips = p.tips.map((t) => `- ${t}`).join("\n") || "- (none)";
+  return `# Daily Plan\n\n## Eisenhower Matrix\n${q("Do Now", p.matrix.urgentImportant)}\n\n${q("Schedule", p.matrix.notUrgentImportant)}\n\n${q("Delegate", p.matrix.urgentNotImportant)}\n\n${q("Eliminate", p.matrix.notUrgentNotImportant)}\n\n## Time-Blocked Schedule\n${sched}\n\n## Optimization Tips\n${tips}\n`;
+}
+
 function PlannerPage() {
   const run = useServerFn(generateAI);
   const [tasks, setTasks] = useState("");
   const [deadlines, setDeadlines] = useState("");
   const [plan, setPlan] = useState<Plan | null>(null);
+  const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function generate() {
@@ -63,12 +72,20 @@ function PlannerPage() {
         },
       });
       const cleaned = content.replace(/^```json\s*|\s*```$/g, "").trim();
-      setPlan(JSON.parse(cleaned) as Plan);
+      const parsed = JSON.parse(cleaned) as Plan;
+      setPlan(parsed);
+      setDraft(planToMarkdown(parsed));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to plan");
     } finally {
       setLoading(false);
     }
+  }
+
+  async function copyPlan() {
+    if (!draft) return;
+    await navigator.clipboard.writeText(draft);
+    toast.success("Plan copied");
   }
 
   return (
@@ -119,6 +136,11 @@ function PlannerPage() {
 
       {plan && (
         <div className="space-y-6">
+          <div className="flex justify-end">
+            <Button variant="outline" size="sm" onClick={copyPlan} disabled={!draft}>
+              <Copy className="mr-2 h-3.5 w-3.5" /> Copy Plan
+            </Button>
+          </div>
           <section>
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Eisenhower Matrix</h2>
             <div className="grid gap-3 md:grid-cols-2">
@@ -181,6 +203,16 @@ function PlannerPage() {
               </CardContent>
             </Card>
           </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Editable draft (Markdown)</CardTitle>
+              <CardDescription>Tweak the plan before copying.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={16} className="font-mono text-xs leading-relaxed" />
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

@@ -43,6 +43,7 @@ function ResearchPage() {
   const [depth, setDepth] = useState("Standard");
   const [focus, setFocus] = useState("");
   const [brief, setBrief] = useState<Brief | null>(null);
+  const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function research() {
@@ -61,7 +62,9 @@ function ResearchPage() {
         },
       });
       const cleaned = content.replace(/^```json\s*|\s*```$/g, "").trim();
-      setBrief(JSON.parse(cleaned) as Brief);
+      const parsed = JSON.parse(cleaned) as Brief;
+      setBrief(parsed);
+      setDraft(toMarkdown(topic, parsed));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to generate brief");
     } finally {
@@ -70,8 +73,8 @@ function ResearchPage() {
   }
 
   async function copyBrief() {
-    if (!brief) return;
-    await navigator.clipboard.writeText(toMarkdown(topic, brief));
+    if (!draft) return;
+    await navigator.clipboard.writeText(draft);
     toast.success("Research brief copied");
   }
 
@@ -121,7 +124,7 @@ function ResearchPage() {
               <CardTitle className="text-base">Research Brief</CardTitle>
               <CardDescription>Review and copy.</CardDescription>
             </div>
-            <Button variant="outline" size="sm" onClick={copyBrief} disabled={!brief}>
+            <Button variant="outline" size="sm" onClick={copyBrief} disabled={!draft}>
               <Copy className="mr-2 h-3.5 w-3.5" /> Copy
             </Button>
           </CardHeader>
@@ -146,6 +149,9 @@ function ResearchPage() {
                 <BulletSection title="Insights" items={brief.insights} />
                 <BulletSection title="Considerations & Risks" items={brief.considerations} />
                 <BulletSection title="Suggested Sources to Explore" items={brief.suggestedSources} />
+                <Section title="Editable draft (Markdown)">
+                  <Textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={14} className="font-mono text-xs leading-relaxed" />
+                </Section>
               </>
             )}
           </CardContent>
