@@ -16,8 +16,8 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Smart Email Generator · Workplace AI Co-Pilot" },
       { name: "description", content: "Draft polished, on-tone emails in seconds with AI-generated subject lines and bodies." },
-      { property: "og:title", content: "Smart Email Generator" },
-      { property: "og:description", content: "Draft polished, on-tone emails in seconds." },
+      { property: "og:title", content: "Smart Email Generator · Workplace AI Co-Pilot" },
+      { property: "og:description", content: "Draft polished, on-tone emails in seconds with AI-generated subject lines and bodies." },
     ],
   }),
   component: EmailPage,
