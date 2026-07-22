@@ -164,17 +164,18 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function BulletSection({ title, items }: { title: string; items: string[] }) {
+function BulletSection({ title, items }: { title: string; items: unknown }) {
+  const list = Array.isArray(items) ? (items as unknown[]).map((x) => (typeof x === "string" ? x : JSON.stringify(x))) : [];
   return (
     <Section title={title}>
       <ul className="space-y-1.5">
-        {items.map((x, i) => (
+        {list.map((x, i) => (
           <li key={i} className="flex gap-2 text-sm">
             <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
             <span className="leading-relaxed">{x}</span>
           </li>
         ))}
-        {items.length === 0 && <li className="text-sm text-muted-foreground">None provided.</li>}
+        {list.length === 0 && <li className="text-sm text-muted-foreground">None provided.</li>}
       </ul>
     </Section>
   );
