@@ -121,10 +121,10 @@ function NotesPage() {
               <CardDescription>Review, copy, or export.</CardDescription>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={copySummary} disabled={!summary}>
+              <Button variant="outline" size="sm" onClick={copySummary} disabled={!draft}>
                 <Copy className="mr-2 h-3.5 w-3.5" /> Copy
               </Button>
-              <Button variant="outline" size="sm" onClick={exportMarkdown} disabled={!summary}>
+              <Button variant="outline" size="sm" onClick={exportMarkdown} disabled={!draft}>
                 <Download className="mr-2 h-3.5 w-3.5" /> Markdown
               </Button>
             </div>
